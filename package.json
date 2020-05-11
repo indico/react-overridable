@@ -1,0 +1,23 @@
+{
+  "name": "react-overridable",
+  "version": "0.0.1",
+  "description": "Makes React components overridable.",
+  "keywords": [
+    "react",
+    "react-component",
+    "override"
+  ],
+  "author": {
+    "name": "Indico Team",
+    "email": "indico-team@cern.ch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indico/react-overridable.git"
+  },
+  "bugs": {
+    "url": "https://github.com/indico/react-overridable/issues"
+  },
+  "homepage": "https://github.com/indico/react-overridable#readme",
+  "license": "MIT"
+}
