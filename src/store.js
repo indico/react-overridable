@@ -2,7 +2,7 @@
  * Simple utility class responsible of keeping track of all overridden components.
  * @constructor object containing the initial map `id: Component` of overridden components
  */
-class OverriddenComponentRepository {
+export class OverriddenComponentRepository {
   constructor(overriddenComponents) {
     this.components = overriddenComponents || {};
   }
