@@ -1,6 +1,6 @@
 {
   "name": "react-overridable",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Makes React components overridable.",
   "keywords": [
     "react",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/indico/react-overridable#readme",
   "license": "MIT",
+  "main": "dist/cjs/index.js",
   "browser": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
