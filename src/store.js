@@ -2,9 +2,9 @@
  * Simple utility class responsible of keeping track of all overridden components.
  * @constructor object containing the initial map `id: Component` of overridden components
  */
-class OverriddenCmpsRepository {
-  constructor(overriddenCmps) {
-    this.components = overriddenCmps || {};
+class OverriddenComponentRepository {
+  constructor(overriddenComponents) {
+    this.components = overriddenComponents || {};
   }
 
   add = (id, Component) => {
@@ -24,4 +24,4 @@ class OverriddenCmpsRepository {
   };
 }
 
-export const overrideStore = new OverriddenCmpsRepository();
+export const overrideStore = new OverriddenComponentRepository();

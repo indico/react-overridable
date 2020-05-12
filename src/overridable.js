@@ -36,15 +36,15 @@ export function parametrize(Component, extraProps) {
  * React component to enable overriding children when rendering.
  */
 function Overridable({id, children, ...restProps}) {
-  const overriddenCmps = useContext(OverridableContext);
+  const overriddenComponents = useContext(OverridableContext);
   const child = children ? React.Children.only(children) : null; // throws an error if multiple children
   const childProps = child ? child.props : {};
 
-  const hasOverridenCmp = id in overriddenCmps;
-  if (hasOverridenCmp) {
+  const hasOverriddenComponent = id in overriddenComponents;
+  if (hasOverriddenComponent) {
     // If there's an override, we replace the component's content with
     // the override + props
-    const Overridden = overriddenCmps[id];
+    const Overridden = overriddenComponents[id];
     return React.createElement(Overridden, {...childProps, ...restProps});
   } else if (child) {
     // No override? Clone the Overridable component's original children
@@ -71,9 +71,9 @@ Overridable.defaultProps = {
  */
 Overridable.component = (id, Component) => {
   const Overridden = ({children, ...props}) => {
-    const overriddenCmps = useContext(OverridableContext);
-    const overriddenCmp = overriddenCmps[id];
-    return React.createElement(overriddenCmp ? overriddenCmp : Component, props, children);
+    const overriddenComponents = useContext(OverridableContext);
+    const overriddenComponent = overriddenComponents[id];
+    return React.createElement(overriddenComponent || Component, props, children);
   };
   Overridden.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),

@@ -55,7 +55,7 @@ const parametrized = parametrize(OverridableExampleComponent, {
   title: 'My new title',
 });
 // create a map {<component id>: <parametrized props>}
-const overriddenCmps = {TitleComponent: parametrized};
+const overriddenComponents = {TitleComponent: parametrized};
 ```
 
 2. **Provide new render elements**: override the default rendered elements for the marked sections.
@@ -65,14 +65,14 @@ const overriddenRenderElement = ({title}) => (
   <h1>{title}</h1>
 );
 // create a map {<render element id>: <new render elements>}
-const overriddenCmps = {TitleComponent.container: overriddenRenderElement};
+const overriddenComponents = {TitleComponent.container: overriddenRenderElement};
 ```
 
 3. **Provide a new component**: you can replace the existing component with a new one.
 ```js
 const NewComponent = () => <strong>This is a new title</strong>;
 // create a map {<component id>: <new component>}
-const overriddenCmps = {TitleComponent: NewComponent};
+const overriddenComponents = {TitleComponent: NewComponent};
 ```
 
 In your app, inject the map of ids-components in the React Context
@@ -82,7 +82,7 @@ use it and replace components when the default are rendered:
 class App extends Component {
   render() {
     return (
-      <OverridableContext.Provider value={overriddenCmps}>
+      <OverridableContext.Provider value={overriddenComponents}>
         <....>
       </OverridableContext.Provider>
     )
