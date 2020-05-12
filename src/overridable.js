@@ -37,13 +37,11 @@ export function parametrize(Component, extraProps) {
  */
 function Overridable({id, children, ...restProps}) {
   const overriddenComponents = useContext(OverridableContext);
-  const child = children ? React.Children.only(children) : null; // throws an error if multiple children
+  const child = children ? React.Children.only(children) : null;
   const childProps = child ? child.props : {};
 
-  const hasOverriddenComponent = id in overriddenComponents;
-  if (hasOverriddenComponent) {
-    // If there's an override, we replace the component's content with
-    // the override + props
+  if (id in overriddenComponents) {
+    // If there's an override, we replace the component's content with the override + props
     const Overridden = overriddenComponents[id];
     return React.createElement(Overridden, {...childProps, ...restProps});
   } else if (child) {
