@@ -163,6 +163,21 @@ describe('Tests for Overridable render elements', () => {
     expect(ExampleCmp.find('ul')).toHaveLength(0);
   });
 
+  test('it should render the overridden cmp when the original cmp has no children', () => {
+    const NoChildrenComponent = () => <Overridable id="NoChildrenComponent.container" />;
+    const overriddenRenderElement = () => <h4>A title</h4>;
+    const overriddenCmps = {'NoChildrenComponent.container': overriddenRenderElement};
+
+    const mounted = mount(
+      <OverridableContext.Provider value={overriddenCmps}>
+        <NoChildrenComponent />
+      </OverridableContext.Provider>
+    );
+
+    const h4 = mounted.childAt(0).find('h4');
+    expect(h4.prop('children')).toEqual('A title');
+  });
+
   test('it should throw when the overridden cmp with id `ExampleComponent` contains multiple children', () => {
     const WrongComponent = () => (
       <Overridable id="WrongComponent.container">

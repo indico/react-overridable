@@ -31,23 +31,27 @@ export function parametrize(Component, extraProps) {
   ParametrizedComponent.displayName = `Parametrized(${name})`;
   return ParametrizedComponent;
 }
+
 /**
  * React component to enable overriding children when rendering.
  */
 function Overridable({id, children, ...restProps}) {
-  const child = React.Children.only(children); // throws an error if multiple children
-  const childProps = child.props || {};
   const overriddenCmps = useContext(OverridableContext);
-  const Overridden = overriddenCmps[id];
+  const child = children ? React.Children.only(children) : null; // throws an error if multiple children
+  const childProps = child ? child.props : {};
 
-  return Overridden !== undefined
-    ? // If there's an override, we replace the component's content with
-      // the override + props
-      React.createElement(Overridden, {...childProps, ...restProps})
-    : // No override? Clone the Overridable component's original children
-    child
-    ? React.cloneElement(child, childProps)
-    : null;
+  const hasOverridenCmp = id in overriddenCmps;
+  if (hasOverridenCmp) {
+    // If there's an override, we replace the component's content with
+    // the override + props
+    const Overridden = overriddenCmps[id];
+    return React.createElement(Overridden, {...childProps, ...restProps});
+  } else if (child) {
+    // No override? Clone the Overridable component's original children
+    return React.cloneElement(child, childProps);
+  } else {
+    return null;
+  }
 }
 
 Overridable.propTypes = {
