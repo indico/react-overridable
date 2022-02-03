@@ -31,11 +31,10 @@
     "test": "jest",
     "lint": "eslint src/**/*.js"
   },
-  "dependencies": {},
   "peerDependencies": {
+    "@babel/runtime": "^7.9.0",
     "prop-types": "^15.7.0",
-    "react": "^16.13.0",
-    "@babel/runtime": "^7.9.0"
+    "react": "^17.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -50,7 +49,6 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
     "eslint-config-indico": "^1.2.1",
     "eslint-config-prettier": "^6.11.0",
@@ -63,11 +61,12 @@
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "rimraf": "^3.0.0",
     "rollup": "^2.9.1",
-    "rollup-plugin-peer-deps-external": "^2.2.0"
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6"
   },
   "browserslist": "> 0.25%, not dead, not IE 11",
   "jest": {
