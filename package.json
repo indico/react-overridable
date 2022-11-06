@@ -34,7 +34,7 @@
   "dependencies": {},
   "peerDependencies": {
     "prop-types": "^15.7.0",
-    "react": "^16.13.0",
+    "react": "^18.0.0",
     "@babel/runtime": "^7.9.0"
   },
   "devDependencies": {
@@ -49,8 +49,6 @@
     "@rollup/plugin-node-resolve": "^7.1.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
     "eslint-config-indico": "^1.2.1",
     "eslint-config-prettier": "^6.11.0",
@@ -63,8 +61,8 @@
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^18.0.1",
+    "react-dom": "^18.0.1",
     "rimraf": "^3.0.0",
     "rollup": "^2.9.1",
     "rollup-plugin-peer-deps-external": "^2.2.0"
