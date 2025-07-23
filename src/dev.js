@@ -12,7 +12,7 @@ export function startDevMode() {
  * A globally exposed function. When called, this activates the developer mode for React Overridable.
  * All overridable components will show their IDs when the mouse is hovered over their parent container.
  */
-window.ReactOverridableDevMode = startDevMode;
+window.reactOverridableEnableDevMode = startDevMode;
 
 /**
  * Returns true if dev mode is active, false otherwise.
