@@ -90,6 +90,15 @@ class App extends Component {
 }
 ```
 
+## ID discovery
+
+On a large or complex page it can be difficult to find the IDs of overridable components, 
+and looking through the source code manually is time consuming.
+
+The library therefore includes a lightweight developer tool to aid with ID discovery.
+To enable this feature, run `reactOverridableEnableDevMode()` in your browser console.
+Then, hover over any overridable element to see a small label containing its ID.
+
 ## Install
 
 To install the library, you will have to install the peer dependencies.
