@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
+import {DevModeWrapper} from './dev';
 
 // create a new context with an empty map of overridden components as default value.
 export const OverridableContext = React.createContext({});
@@ -43,10 +44,12 @@ function Overridable({id, children, ...restProps}) {
   if (id in overriddenComponents) {
     // If there's an override, we replace the component's content with the override + props
     const Overridden = overriddenComponents[id];
-    return React.createElement(Overridden, {...childProps, ...restProps});
+    const element = React.createElement(Overridden, {...childProps, ...restProps});
+    return <DevModeWrapper id={id}>{element}</DevModeWrapper>;
   } else if (child) {
     // No override? Clone the Overridable component's original children
-    return React.cloneElement(child, childProps);
+    const element = React.cloneElement(child, childProps);
+    return <DevModeWrapper id={id}>{element}</DevModeWrapper>;
   } else {
     return null;
   }
