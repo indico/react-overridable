@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
+import PropTypes from 'prop-types';
 
 const event = 'ReactOverridableDevMode';
 
@@ -78,6 +79,11 @@ export function DevModeWrapper({id, children}) {
   );
 }
 
+DevModeWrapper.propTypes = {
+  id: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
 function IDTag({targetRef, id}) {
   const [position, setPosition] = useState(null);
   const [show, setShow] = useState(false);
@@ -149,3 +155,8 @@ function IDTag({targetRef, id}) {
     </p>
   );
 }
+
+IDTag.propTypes = {
+  id: PropTypes.string.isRequired,
+  targetRef: PropTypes.shape({current: PropTypes.instanceOf(Element)}).isRequired,
+};
