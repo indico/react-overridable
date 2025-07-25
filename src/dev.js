@@ -91,7 +91,7 @@ const presumedHeight = 25;
 const presumedWidth = 400;
 
 function storeTagPosition(id, top, left) {
-  const exists = tagPositions.some(t => t.id === id);
+  const index = tagPositions.findIndex(t => t.id === id);
   const position = {
     id,
     top,
@@ -100,13 +100,10 @@ function storeTagPosition(id, top, left) {
     right: left + presumedWidth,
   };
 
-  if (!exists) {
+  if (index === -1) {
     tagPositions.push(position);
   } else {
-    const index = tagPositions.findIndex(t => t.id === id);
-    tagPositions[index] = {
-      ...position,
-    };
+    tagPositions[index] = position;
   }
 }
 
