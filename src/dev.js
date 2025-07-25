@@ -11,7 +11,7 @@ export function startDevMode() {
 
 /**
  * A globally exposed function. When called, this activates the developer mode for React Overridable.
- * All overridable components will show their IDs when the mouse is hovered over their parent container.
+ * All overridable components will show their IDs in a small overlay tag until the next page reload.
  */
 window.reactOverridableEnableDevMode = startDevMode;
 
@@ -85,6 +85,8 @@ DevModeWrapper.propTypes = {
 };
 
 const tagPositions = [];
+// To avoid having to integrate precise size measuring (which depends on OS, browser, font, etc), we just make some reasonable
+// assumptions and create a bounding box of this size.
 const presumedHeight = 25;
 const presumedWidth = 400;
 
@@ -115,6 +117,8 @@ function removeTagPosition(id) {
   }
 }
 
+// Returns true if the proposed location (with the height/width presumptions) would overlap with another
+// tag for a different ID.
 function overlapExists(id, refTop, refLeft) {
   const provisionalBottom = refTop + presumedHeight;
   const provisionalRight = refLeft + presumedWidth;
@@ -134,6 +138,7 @@ function overlapExists(id, refTop, refLeft) {
 function getNewPosition(id, refTop, refLeft) {
   let top = refTop;
   while (overlapExists(id, top, refLeft)) {
+    // Keep moving the tag location downwards until we no longer have an overlap.
     top++;
   }
 
@@ -154,6 +159,7 @@ function IDTag({targetRef, id}) {
       const parentRect = node.parentElement.getBoundingClientRect();
 
       if (parentRect.width === 0 || parentRect.height === 0) {
+        // If width/height is 0 then the element is not visible so we should avoid showing the tag.
         setPosition(null);
       } else {
         const newPosition = getNewPosition(
