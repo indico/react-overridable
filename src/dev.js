@@ -84,7 +84,7 @@ DevModeWrapper.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const tagPositions = [];
+let tagPositions = [];
 // To avoid having to integrate precise size measuring (which depends on OS, browser, font, etc), we just make some reasonable
 // assumptions and create a bounding box of this size.
 const presumedHeight = 25;
@@ -108,10 +108,7 @@ function storeTagPosition(id, top, left) {
 }
 
 function removeTagPosition(id) {
-  const index = tagPositions.findIndex(t => t.id === id);
-  if (index !== -1) {
-    tagPositions.splice(index, 1);
-  }
+  tagPositions = tagPositions.filter(t => t.id !== id);
 }
 
 // Returns true if the proposed location (with the height/width presumptions) would overlap with another
@@ -121,7 +118,9 @@ function overlapExists(id, refTop, refLeft) {
   const provisionalRight = refLeft + presumedWidth;
 
   return tagPositions.some(t => {
-    if (t.id === id) return false;
+    if (t.id === id) {
+      return false;
+    }
     if (provisionalRight < t.left || t.right < refLeft) {
       return false;
     }
@@ -180,8 +179,8 @@ function IDTag({targetRef, id}) {
     };
   }, [targetRef, id]);
 
-  const onClick = useCallback(() => {
-    navigator.clipboard.writeText(id);
+  const onClick = useCallback(async () => {
+    await navigator.clipboard.writeText(id);
     setCopied(true);
     setTimeout(() => setCopied(false), 1000);
   }, [id]);
