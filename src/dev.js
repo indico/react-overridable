@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import PropTypes from 'prop-types';
 
@@ -84,38 +84,84 @@ DevModeWrapper.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+const tagPositions = [];
+const presumedHeight = 25;
+const presumedWidth = 400;
+
+function storeTagPosition(id, top, left) {
+  const exists = tagPositions.some(t => t.id === id);
+  const position = {
+    id,
+    top,
+    left,
+    bottom: top + presumedHeight,
+    right: left + presumedWidth,
+  };
+
+  if (!exists) {
+    tagPositions.push(position);
+  } else {
+    const index = tagPositions.findIndex(t => t.id === id);
+    tagPositions[index] = {
+      ...position,
+    };
+  }
+}
+
+function removeTagPosition(id) {
+  const index = tagPositions.findIndex(t => t.id === id);
+  if (index !== -1) {
+    tagPositions.splice(index, 1);
+  }
+}
+
+function overlapExists(id, refTop, refLeft) {
+  const provisionalBottom = refTop + presumedHeight;
+  const provisionalRight = refLeft + presumedWidth;
+
+  return tagPositions.some(t => {
+    if (t.id === id) return false;
+    if (provisionalRight < t.left || t.right < refLeft) {
+      return false;
+    }
+    if (provisionalBottom < t.top || t.bottom < refTop) {
+      return false;
+    }
+    return true;
+  });
+}
+
+function getNewPosition(id, refTop, refLeft) {
+  let top = refTop;
+  while (overlapExists(id, top, refLeft)) {
+    top++;
+  }
+
+  return {top, left: refLeft};
+}
+
 function IDTag({targetRef, id}) {
   const [position, setPosition] = useState(null);
-  const [show, setShow] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const node = targetRef.current;
     if (!node) return;
-    const parent = node.parentElement;
 
-    /**
-     * Only show the ID tag if the element's parents is hovered. We can't get a direct reference to the DOM element itself
-     * because we can't rely on all user-implemented overridable components to accept a `ref` prop.
-     */
-    const mouseEventHandler = e => {
-      setShow(parent.contains(e.target));
-    };
-
-    let frameId, lastPosition;
+    let frameId;
     const animationFrameHandler = () => {
       const rect = node.getBoundingClientRect();
+      const parentRect = node.parentElement.getBoundingClientRect();
 
-      const newPosition = {
-        top: rect.top + window.scrollY,
-        left: rect.left + window.scrollX,
-      };
-
-      const hasChanged =
-        !lastPosition ||
-        lastPosition.top !== newPosition.top ||
-        lastPosition.left !== newPosition.left;
-
-      if (hasChanged) {
+      if (parentRect.width === 0 || parentRect.height === 0) {
+        setPosition(null);
+      } else {
+        const newPosition = getNewPosition(
+          id,
+          rect.top + window.scrollY,
+          rect.left + window.scrollX
+        );
+        storeTagPosition(id, newPosition.top, newPosition.left);
         setPosition(newPosition);
       }
 
@@ -124,18 +170,25 @@ function IDTag({targetRef, id}) {
     };
 
     animationFrameHandler();
-    document.addEventListener('mousemove', mouseEventHandler);
 
     return () => {
-      document.removeEventListener('mousemove', mouseEventHandler);
+      removeTagPosition(id);
       cancelAnimationFrame(frameId);
     };
-  }, [targetRef]);
+  }, [targetRef, id]);
 
-  if (!position || !show) return null;
+  const onClick = useCallback(() => {
+    navigator.clipboard.writeText(id);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1000);
+  }, [id]);
+
+  if (!position) return null;
 
   return (
-    <p
+    <button
+      type="button"
+      onClick={onClick}
       style={{
         position: 'absolute',
         top: position.top,
@@ -144,15 +197,15 @@ function IDTag({targetRef, id}) {
         color: 'white',
         fontSize: '10px',
         zIndex: 9999,
-        pointerEvents: 'none',
         padding: '2px 4px',
         borderRadius: '4px',
         border: '1px solid white',
         fontWeight: 'bold',
+        cursor: 'pointer',
       }}
     >
-      {id}
-    </p>
+      {copied ? 'Copied!' : id}
+    </button>
   );
 }
 
