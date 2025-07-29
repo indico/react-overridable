@@ -10,7 +10,8 @@ export function startDevMode() {
 }
 
 /**
- * A globally exposed function. When called, this activates the developer mode for React Overridable.
+ * A globally exposed function. When called, this activates the developer mode for
+ * React Overridable.
  * All overridable components will show their IDs in a small overlay tag until the next page reload.
  */
 window.reactOverridableEnableDevMode = startDevMode;
@@ -36,8 +37,10 @@ export function useDevMode() {
 
 let _overlayRoot = null;
 /**
- * In order to avoid a full re-render of the component when devmode gets activated (which can cause bugs in older components with complex side-effects)
- * we use a top-level div overlay and display the ID tags as absolute-positioned elements located at the location of the relevant overridable.
+ * In order to avoid a full re-render of the component when devmode gets activated
+ * (which can cause bugs in older components with complex side-effects) we use a top-level
+ * div overlay and display the ID tags as absolute-positioned elements located at the location
+ * of the relevant overridable.
  *
  * This function creates this overlay if it has not yet been created and returns a reference to it.
  */
@@ -53,12 +56,14 @@ function useOverlayRoot() {
 }
 
 /**
- * Renders the child (i.e. the default component or the override) as normal, ensuring there are no modifications to the DOM whatsoever
- * when dev mode is not active. This means regular rendering of the component is unaffected.
+ * Renders the child (i.e. the default component or the override) as normal, ensuring
+ * there are no modifications to the DOM whatsoever when dev mode is not active.
+ * This means regular rendering of the component is unaffected.
  *
- * When dev mode gets activated, we also ensure a full re-render does not happen (e.g. wrapping the component in a new div). Instead,
- * we insert a <span> just before the child which acts as a location anchor. We use this to calculate where to show the absolute-positioned
- * ID tag in the top-level overlay.
+ * When dev mode gets activated, we also ensure a full re-render does not happen
+ * (e.g. wrapping the component in a new div). Instead, we insert a <span> just
+ * before the child which acts as a location anchor. We use this to calculate where to
+ * show the absolute-positioned ID tag in the top-level overlay.
  */
 export function DevModeWrapper({id, children}) {
   const isDevMode = useDevMode();
@@ -85,8 +90,8 @@ DevModeWrapper.propTypes = {
 };
 
 let tagPositions = [];
-// To avoid having to integrate precise size measuring (which depends on OS, browser, font, etc), we just make some reasonable
-// assumptions and create a bounding box of this size.
+// To avoid having to integrate precise size measuring (which depends on OS, browser, font, etc),
+// we just make some reasonable assumptions and create a bounding box of this size.
 const presumedHeight = 25;
 const presumedWidth = 400;
 
@@ -111,8 +116,8 @@ function removeTagPosition(id) {
   tagPositions = tagPositions.filter(t => t.id !== id);
 }
 
-// Returns true if the proposed location (with the height/width presumptions) would overlap with another
-// tag for a different ID.
+// Returns true if the proposed location (with the height/width presumptions) would overlap
+// with another tag for a different ID.
 function overlapExists(id, refTop, refLeft) {
   const provisionalBottom = refTop + presumedHeight;
   const provisionalRight = refLeft + presumedWidth;
