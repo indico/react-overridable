@@ -34,8 +34,8 @@
   "peerDependencies": {
     "@babel/runtime": "^7.9.0",
     "prop-types": "^15.7.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react": ">=16.14.0",
+    "react-dom": ">=16.14.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
