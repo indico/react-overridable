@@ -1,3 +1,7 @@
+## 0.0.4 (Unreleased)
+
+* Add developer tools for component ID discovery
+
 ## 0.0.3 (May 15, 2020)
 
 * Remove 'use strict' directive from the built CommonJS module dist,
