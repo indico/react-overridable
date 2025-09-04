@@ -43,9 +43,20 @@ function Overridable({id, children, ...restProps}) {
 
   if (id in overriddenComponents) {
     // If there's an override, we replace the component's content with the override + props
-    const Overridden = overriddenComponents[id];
-    const element = React.createElement(Overridden, {...childProps, ...restProps});
-    return <DevModeWrapper id={id}>{element}</DevModeWrapper>;
+
+    if (Array.isArray(overriddenComponents[id])) {
+      // if the override is an array we display all of them instead of the possible default children
+      const overrides = overriddenComponents[id];
+      const elements = overrides.map((overridden, i) =>
+        React.createElement(overridden, {...childProps, ...restProps, key: `${id}-${i}`})
+      );
+      return <DevModeWrapper id={id}>{elements}</DevModeWrapper>;
+    } else {
+      // if it is not an array if will be used to replace it the possible default child
+      const Overridden = overriddenComponents[id];
+      const element = React.createElement(Overridden, {...childProps, ...restProps});
+      return <DevModeWrapper id={id}>{element}</DevModeWrapper>;
+    }
   } else if (child) {
     // No override? Clone the Overridable component's original children
     const element = React.cloneElement(child, childProps);
