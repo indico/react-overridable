@@ -1,4 +1,8 @@
-## 0.0.4 (Unreleased)
+## 1.0.0 (Sep 11, 2025)
+
+* No changes, just a version bump to a non-0.x version
+
+## 0.0.4 (Jul 31, 2025)
 
 * Add developer tools for component ID discovery
 
