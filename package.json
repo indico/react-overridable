@@ -51,7 +51,7 @@
     "babel-jest": "^26.0.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "eslint": "^6.8.0",
+    "eslint": "^9.35.0",
     "eslint-config-indico": "^1.2.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-babel": "^5.3.0",
