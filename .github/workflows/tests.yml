@@ -9,14 +9,14 @@ on:
 jobs:
   tests:
     name: Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v5
         with:
-          node-version: 14.x
+          node-version: lts/*
 
       - name: Install dependencies
         run: npm ci
