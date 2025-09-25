@@ -11,6 +11,13 @@ export class OverriddenComponentRepository {
     this.components[id] = Component;
   };
 
+  append = (id, Component) => {
+    if (!Array.isArray(this.components[id])) {
+      this.components[id] = [];
+    }
+    this.components[id].push(Component);
+  };
+
   get = id => {
     return this.components[id];
   };
