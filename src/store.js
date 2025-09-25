@@ -25,3 +25,30 @@ export class OverriddenComponentRepository {
 }
 
 export const overrideStore = new OverriddenComponentRepository();
+
+export class ExpandedComponentRepository {
+  constructor(overriddenComponents) {
+    this.components = overriddenComponents || {};
+  }
+
+  append = (id, Component) => {
+    if (!Array.isArray(this.components[id])) {
+      this.components[id] = [];
+    }
+    this.components[id].push(Component);
+  };
+
+  get = id => {
+    return this.components[id];
+  };
+
+  getAll = () => {
+    return {...this.components};
+  };
+
+  clear = () => {
+    this.components = {};
+  };
+}
+
+export const expandStore = new ExpandedComponentRepository();
