@@ -56,6 +56,17 @@ describe('Tests for store utility object.', () => {
 
     expect(NewCmp.find('ul')).toHaveLength(0);
   });
+
+  test('it should return component by id', () => {
+    overrideStore.add(CMP_ID, ExampleComponent);
+    const component = overrideStore.get(CMP_ID);
+    expect(component).toBeDefined();
+    expect(component).toBe(ExampleComponent);
+  });
+
+  test('it should return null for non-existent component', () => {
+    expect(overrideStore.get('nonexistent-id')).toBeUndefined();
+  });
 });
 
 describe('React 18 StrictMode compatibility', () => {

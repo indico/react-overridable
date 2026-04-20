@@ -106,6 +106,13 @@ describe('Tests for parametrized', () => {
     expect(children).toHaveLength(1);
   });
 
+  test('it should use fallback name when component has no displayName', () => {
+    const AnonymousComponent = () => <div>Anonymous</div>;
+    const ParametrizedAnonymous = parametrize(AnonymousComponent, {id: 1});
+
+    expect(ParametrizedAnonymous.displayName).toEqual('Parametrized(AnonymousComponent)');
+  });
+
   test('it should render the cmp with id `ExampleComponent` with new props passed as function', () => {
     const parametrized = parametrize(OverridableExampleComponent, ({title, ...props}) => ({
       title: `Other ${title}`,
@@ -126,6 +133,15 @@ describe('Tests for parametrized', () => {
 
     const children = ExampleCmp.find('p').children();
     expect(children).toHaveLength(1);
+  });
+
+  // eslint-disable-next-line jest/expect-expect
+  test('it should handle parametrize called twice on same component', () => {
+    const OnceParametrizedComponent = parametrize(OverridableExampleComponent, {title: 'First'});
+    const TwiceParametrizedComponent = parametrize(OnceParametrizedComponent, {color: 'green'});
+
+    const mounted = mount(<TwiceParametrizedComponent />);
+    assertTitleStyle(mounted.find('div'), 'First', {color: 'green'});
   });
 });
 
@@ -186,6 +202,18 @@ describe('Tests for Overridable render elements', () => {
       </Overridable>
     );
     expect(() => mount(WrongComponent)).toThrow();
+  });
+
+  test('it should render nothing when the overriden cmp with id `ExampleComponent` has no overrides & children', () => {
+    const NoChildrenComponent = () => <Overridable id="NoChildrenComponent.container" />;
+
+    const mounted = mount(
+      <OverridableContext.Provider value={{}}>
+        <NoChildrenComponent />
+      </OverridableContext.Provider>
+    );
+
+    expect(mounted.html()).toEqual('');
   });
 });
 

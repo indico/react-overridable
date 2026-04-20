@@ -29,6 +29,7 @@
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production rollup -c",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.js"
   },
   "peerDependencies": {
