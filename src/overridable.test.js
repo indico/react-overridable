@@ -10,13 +10,8 @@ class ExampleComponent extends Component {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   };
 
-  static defaultProps = {
-    color: 'blue',
-    children: null,
-  };
-
   render() {
-    const {title, color, children} = this.props;
+    const {title, color = 'blue', children = null} = this.props;
     return (
       <Overridable id="ExampleComponent.container" cmpTitle={title} cmpColor={color}>
         <>

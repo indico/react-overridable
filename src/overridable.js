@@ -36,7 +36,7 @@ export function parametrize(Component, extraProps) {
 /**
  * React component to enable overriding children when rendering.
  */
-function Overridable({id, children, ...restProps}) {
+function Overridable({id = null, children = null, ...restProps}) {
   const overriddenComponents = useContext(OverridableContext);
   const child = children ? React.Children.only(children) : null;
   const childProps = child ? child.props : {};
@@ -62,25 +62,17 @@ Overridable.propTypes = {
   id: PropTypes.string,
 };
 
-Overridable.defaultProps = {
-  id: null,
-  children: null,
-};
-
 /**
  * High-order component to override an existing React component and provide a new component instead.
  */
 Overridable.component = (id, Component) => {
-  const Overridden = ({children, ...props}) => {
+  const Overridden = ({children = null, ...props}) => {
     const overriddenComponents = useContext(OverridableContext);
     const overriddenComponent = overriddenComponents[id];
     return React.createElement(overriddenComponent || Component, props, children);
   };
   Overridden.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  };
-  Overridden.defaultProps = {
-    children: null,
   };
   const name = Component.displayName || Component.name;
   Overridden.displayName = `Overridable(${name})`;
