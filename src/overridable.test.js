@@ -122,6 +122,19 @@ describe('Tests for parametrized', () => {
     const children = ExampleCmp.find('p').children();
     expect(children).toHaveLength(1);
   });
+
+  test('it should recalculate function props when the passed props change', () => {
+    const ParametrizedComponent = parametrize(ExampleComponent, ({title}) => ({
+      title: `Test Title ${title}`,
+    }));
+    const mounted = mount(<ParametrizedComponent title="First" />);
+
+    expect(mounted.find(ExampleComponent).prop('title')).toEqual('Test Title First');
+
+    mounted.setProps({title: 'Second'});
+
+    expect(mounted.find(ExampleComponent).prop('title')).toEqual('Test Title Second');
+  });
 });
 
 describe('Tests for Overridable render elements', () => {

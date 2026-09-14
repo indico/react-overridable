@@ -13,9 +13,11 @@ export const OverridableContext = React.createContext({});
  */
 export function parametrize(Component, extraProps) {
   const ParametrizedComponent = props => {
+    let _extraProps = extraProps;
+
     // handle deferred prop calculation
-    if (typeof extraProps === 'function') {
-      extraProps = extraProps(props);
+    if (typeof _extraProps === 'function') {
+      _extraProps = _extraProps(props);
     }
 
     // Store the original component in an attribute
@@ -24,7 +26,7 @@ export function parametrize(Component, extraProps) {
     }
 
     // overrideProps override props if there is a name collision
-    const {children, ...attrProps} = {...props, ...extraProps};
+    const {children, ...attrProps} = {...props, ..._extraProps};
     return React.createElement(Component, attrProps, children);
   };
 
