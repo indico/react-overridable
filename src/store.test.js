@@ -9,12 +9,8 @@ class ExampleComponent extends Component {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   };
 
-  static defaultProps = {
-    children: null,
-  };
-
   render() {
-    const {title, children} = this.props;
+    const {title, children = null} = this.props;
     return (
       <>
         <h1>{title}</h1>

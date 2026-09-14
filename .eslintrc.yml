@@ -24,6 +24,9 @@ rules:
   # disable no-unresolved since we don't install the deps
   # of our react example app
   import/no-unresolved: off
+  react/require-default-props:
+    - warn
+    - functions: defaultArguments
   jest/expect-expect:
     - warn
     - assertFunctionNames:
