@@ -36,7 +36,7 @@ export function parametrize(Component, extraProps) {
 /**
  * React component to enable overriding children when rendering.
  */
-function Overridable({id = null, children = null, ...restProps}) {
+const Overridable = React.forwardRef(({id = null, children = null, ...restProps}, ref) => {
   const overriddenComponents = useContext(OverridableContext);
   const child = children ? React.Children.only(children) : null;
   const childProps = child ? child.props : {};
@@ -44,16 +44,22 @@ function Overridable({id = null, children = null, ...restProps}) {
   if (id in overriddenComponents) {
     // If there's an override, we replace the component's content with the override + props
     const Overridden = overriddenComponents[id];
-    const element = React.createElement(Overridden, {...childProps, ...restProps});
+    const props = {...childProps, ...restProps};
+    if (ref) {
+      props.ref = ref;
+    }
+    const element = React.createElement(Overridden, props);
     return <DevModeWrapper id={id}>{element}</DevModeWrapper>;
   } else if (child) {
     // No override? Clone the Overridable component's original children
-    const element = React.cloneElement(child, childProps);
+    const element = ref ? React.cloneElement(child, {ref}) : React.cloneElement(child, childProps);
     return <DevModeWrapper id={id}>{element}</DevModeWrapper>;
   } else {
     return null;
   }
-}
+});
+
+Overridable.displayName = 'Overridable';
 
 Overridable.propTypes = {
   /** The children of the component */

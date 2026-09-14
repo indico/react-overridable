@@ -216,3 +216,42 @@ describe('Tests for Overridable.component', () => {
     expect(NewCmp.find('ul')).toHaveLength(0);
   });
 });
+
+describe('Tests for ref forwarding', () => {
+  class RefChild extends Component {
+    render() {
+      return <div className="ref-child" />;
+    }
+  }
+
+  test('it should forward a ref to the cloned child', () => {
+    const ref = React.createRef();
+    mount(
+      <Overridable id="NotOverridden.container" ref={ref}>
+        <RefChild />
+      </Overridable>
+    );
+    expect(ref.current).toBeInstanceOf(RefChild);
+  });
+
+  test('it should forward a ref to the overridden component', () => {
+    const ref = React.createRef();
+    mount(
+      <OverridableContext.Provider value={{'Overridden.container': RefChild}}>
+        <Overridable id="Overridden.container" ref={ref}>
+          <div />
+        </Overridable>
+      </OverridableContext.Provider>
+    );
+    expect(ref.current).toBeInstanceOf(RefChild);
+  });
+
+  test('it should render normally when no ref is given', () => {
+    const mounted = mount(
+      <Overridable id="NotOverridden.container">
+        <RefChild />
+      </Overridable>
+    );
+    expect(mounted.find('.ref-child')).toHaveLength(1);
+  });
+});
